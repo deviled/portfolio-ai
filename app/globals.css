@@ -1,6 +1,7 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @theme {
-	--color-neutral-200: #f0f0f0;
-	--color-neutral-300: #d1d1d1;
+  --color-neutral-200: #f0f0f0;
+  --color-neutral-300: #d1d1d1;
 }
