@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="dark:text-white bg-white dark:bg-black min-h-dvh flex flex-col justify-between antialiased">
-        <main className="flex h-screen px-6 py-2">
+        <main className="flex h-screen">
           {children}
           <Toaster richColors theme="system" />
         </main>

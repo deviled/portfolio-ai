@@ -119,13 +119,15 @@ const Home: FC = () => {
   return (
     <div
       className={`${
-        hasStartedChat ? "pt-4 h-[calc(100vh-100px)]" : "items-center"
+        hasStartedChat ? "h-[calc(100vh-100px)]" : "items-center"
       } w-full flex justify-center relative`}
     >
       {hasStartedChat && (
         <button
           onClick={handleRefresh}
-          className="absolute left-0 top-4 p-2 rounded-full bg-neutral-200/80 dark:bg-neutral-600/70 hover:bg-neutral-300/80 dark:hover:bg-black text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white transition-all duration-200"
+          className={`absolute left-0 top-4 p-2 rounded-full bg-neutral-200 dark:bg-neutral-800 hover:bg-neutral-300/80 dark:hover:bg-black text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white transition-all duration-200 hidden md:block z-10 ${
+            isPending ? "opacity-0 pointer-events-none" : ""
+          }`}
           aria-label="Back to start"
         >
           <RiArrowLeftLine className="w-5 h-5" />
@@ -146,7 +148,7 @@ const Home: FC = () => {
             </div>
           </div>
         ) : (
-          <div className="flex-1 relative overflow-y-auto px-4 space-y-4 flex flex-col items-start [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+          <div className="flex-1 relative overflow-y-auto pt-4 px-4 space-y-4 flex flex-col items-start [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
             {messages.map((message, index) => (
               <Message key={index} message={message} />
             ))}
