@@ -3,10 +3,60 @@
 import { FC, useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
 import { track } from "@vercel/analytics";
-import { DEFAULT_QUESTIONS, MAX_MESSAGES } from "@/constants/chat";
+import { MAX_MESSAGES } from "@/constants/chat";
+import { DEFAULT_QUESTIONS } from "@/constants/questions";
 import { Question } from "@/components/Question";
 import { Message, type MessageType } from "@/components/Message";
 import { ChatInput } from "@/components/ChatInput";
+import { RiArrowLeftLine } from "react-icons/ri";
+
+// Types
+interface StreamData {
+  type: string;
+  content: string;
+  threadId?: string;
+}
+
+// Utility functions
+const handleStreamResponse = async (
+  reader: ReadableStreamDefaultReader<Uint8Array>,
+  setMessages: React.Dispatch<React.SetStateAction<MessageType[]>>
+) => {
+  const decoder = new TextDecoder();
+  let buffer = "";
+  let currentContent = "";
+
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split("\n");
+    buffer = lines.pop() || ""; // Keep the last incomplete line in the buffer
+
+    for (const line of lines) {
+      if (line.startsWith("data: ")) {
+        try {
+          const data = JSON.parse(line.slice(6)) as StreamData;
+          if (data.type === "message" && data.content) {
+            currentContent += data.content;
+            setMessages((prevMessages) => {
+              const newMessages = [...prevMessages];
+              const lastMessage = newMessages[newMessages.length - 1];
+              if (lastMessage && lastMessage.role === "assistant") {
+                lastMessage.content = currentContent;
+                lastMessage.threadId = data.threadId;
+              }
+              return newMessages;
+            });
+          }
+        } catch (e) {
+          console.error("Error parsing stream data:", e);
+        }
+      }
+    }
+  }
+};
 
 const Home: FC = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
@@ -15,52 +65,9 @@ const Home: FC = () => {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
   useEffect(() => {
-    scrollToBottom();
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
-  const handleStreamResponse = async (
-    reader: ReadableStreamDefaultReader<Uint8Array>
-  ) => {
-    const decoder = new TextDecoder();
-    let buffer = "";
-    let currentContent = "";
-
-    while (true) {
-      const { value, done } = await reader.read();
-      if (done) break;
-
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split("\n");
-      buffer = lines.pop() || ""; // Keep the last incomplete line in the buffer
-
-      for (const line of lines) {
-        if (line.startsWith("data: ")) {
-          try {
-            const data = JSON.parse(line.slice(6));
-            if (data.type === "message" && data.content) {
-              currentContent += data.content;
-              setMessages((prevMessages) => {
-                const newMessages = [...prevMessages];
-                const lastMessage = newMessages[newMessages.length - 1];
-                if (lastMessage && lastMessage.role === "assistant") {
-                  lastMessage.content = currentContent;
-                  lastMessage.threadId = data.threadId;
-                }
-                return newMessages;
-              });
-            }
-          } catch (e) {
-            console.error("Error parsing stream data:", e);
-          }
-        }
-      }
-    }
-  };
 
   const handleSubmit = async (inputText: string) => {
     if (!inputText.trim() || messages.length >= MAX_MESSAGES * 2) return;
@@ -90,7 +97,7 @@ const Home: FC = () => {
         throw new Error("Failed to get response from server");
       }
 
-      await handleStreamResponse(response.body.getReader());
+      await handleStreamResponse(response.body.getReader(), setMessages);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -113,8 +120,17 @@ const Home: FC = () => {
     <div
       className={`${
         hasStartedChat ? "pt-4 h-[calc(100vh-100px)]" : "items-center"
-      } w-full flex justify-center`}
+      } w-full flex justify-center relative`}
     >
+      {hasStartedChat && (
+        <button
+          onClick={handleRefresh}
+          className="absolute left-0 top-4 p-2 rounded-full bg-neutral-200/80 dark:bg-neutral-600/70 hover:bg-neutral-300/80 dark:hover:bg-black text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white transition-all duration-200"
+          aria-label="Back to start"
+        >
+          <RiArrowLeftLine className="w-5 h-5" />
+        </button>
+      )}
       <div className="flex flex-col w-full max-w-4xl">
         {!hasStartedChat ? (
           <div className="w-full p-4">
@@ -130,7 +146,7 @@ const Home: FC = () => {
             </div>
           </div>
         ) : (
-          <div className="flex-1 relative overflow-y-auto p-4 space-y-4 flex flex-col items-start [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+          <div className="flex-1 relative overflow-y-auto px-4 space-y-4 flex flex-col items-start [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
             {messages.map((message, index) => (
               <Message key={index} message={message} />
             ))}

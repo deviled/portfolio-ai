@@ -1,6 +1,6 @@
 import { FC, useRef, useState } from "react";
 import Image from "next/image";
-import { RiLoader3Line, RiRefreshLine, RiArrowRightLine } from "react-icons/ri";
+import { RiLoader3Line, RiArrowRightLine } from "react-icons/ri";
 
 interface ChatInputProps {
   isPending: boolean;
@@ -67,9 +67,7 @@ export const ChatInput: FC<ChatInputProps> = ({
           >
             {isPending ? (
               <RiLoader3Line className="animate-spin" size={24} />
-            ) : isRefresh ? (
-              <RiRefreshLine size={24} />
-            ) : (
+            ) : isRefresh ? null : (
               <RiArrowRightLine size={24} />
             )}
           </button>
