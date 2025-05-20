@@ -125,7 +125,7 @@ const Home: FC = () => {
       {hasStartedChat && (
         <button
           onClick={handleRefresh}
-          className={`absolute left-2 top-4 p-2 rounded-full bg-neutral-200 dark:bg-neutral-800 hover:bg-neutral-300/80 dark:hover:bg-black text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white transition-all duration-200 hidden md:block z-10 ${
+          className={`absolute left-4 top-4 p-2 rounded-full bg-neutral-200 dark:bg-neutral-800 hover:bg-neutral-300/80 dark:hover:bg-neutral-900 text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white transition-all duration-200 hidden md:block z-10 ${
             isPending ? "opacity-0 pointer-events-none" : ""
           }`}
           aria-label="Back to start"

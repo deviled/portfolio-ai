@@ -19,7 +19,7 @@ export const Message: FC<MessageProps> = ({ message }) => {
       }`}
     >
       {message.role === "user" ? (
-        <div className="bg-neutral-300/70 dark:bg-neutral-700/80 text-white px-5 py-3 rounded-2xl rounded-tr-none">
+        <div className="bg-neutral-300/70 dark:bg-neutral-700/80 text-white px-4 py-2 rounded-2xl rounded-tr-none">
           {message.content}
         </div>
       ) : (
