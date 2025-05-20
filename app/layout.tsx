@@ -4,9 +4,9 @@ import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Mindaugas Gudeliūnas • Lead frontend developer",
+  title: "Mindaugas Gudeliūnas",
   description:
-    "AI-powered portfolio and mentoring platform by Mindaugas Gudeliūnas, Lead Frontend Developer. A modern web application showcasing professional expertise and providing interactive mentoring capabilities through advanced AI integration.",
+    "Lead Frontend Developer Mindaugas Gudeliūnas' interactive portfolio featuring AI-powered mentoring. Explore professional projects, get personalized guidance, and experience cutting-edge web development expertise.",
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
