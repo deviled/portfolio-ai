@@ -9,6 +9,7 @@ export type MessageType = {
 
 interface MessageProps {
   message: MessageType;
+  isLast?: boolean;
 }
 
 const LOADING_MESSAGES = [
@@ -32,7 +33,7 @@ const getRandomMessage = (currentMessage: string) => {
   ];
 };
 
-export const Message: FC<MessageProps> = ({ message }) => {
+export const Message: FC<MessageProps> = ({ message, isLast }) => {
   const [loadingMessage, setLoadingMessage] = useState(LOADING_MESSAGES[0]);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export const Message: FC<MessageProps> = ({ message }) => {
     <div
       className={`flex w-full ${
         message.role === "user" ? "justify-end" : "justify-start"
-      }`}
+      } ${!isLast ? "mb-4 sm:mb-6" : ""}`}
     >
       {message.role === "user" ? (
         <div className="bg-[#1e1e1e] text-[#d4d4d4] rounded-2xl rounded-tr-none border border-[#3d3d3d] px-3 py-2 sm:px-4 max-w-[85%] sm:max-w-[80%] text-sm sm:text-base">

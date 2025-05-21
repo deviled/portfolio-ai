@@ -118,24 +118,39 @@ export default function Home() {
     <div className="min-h-screen flex flex-col bg-[#1e1e1e]">
       {/* Main Content */}
       <main className="flex-grow overflow-y-auto pb-24 sm:pb-28">
-        <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-8">
+        <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-8 h-full">
           {messages.length === 0 ? (
-            <div className="space-y-6 sm:space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-                {DEFAULT_QUESTIONS.map((question, index) => (
-                  <Question
-                    key={index}
-                    question={question}
-                    onQuestionClick={handleSubmit}
-                    isDisabled={isPending}
-                  />
-                ))}
+            <div className="min-h-[calc(100vh-12rem)] flex items-center justify-center">
+              <div className="space-y-6 sm:space-y-8 w-full">
+                <div className="text-center space-y-3">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-[#d4d4d4]">
+                    Chat with Digital <span className="text-[#FF00FF]">Me</span>
+                    .
+                  </h1>
+                  <p className="text-[#a0a0a0] text-sm sm:text-base">
+                    Ask me anything about my journey, projects, or tech stack
+                  </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                  {DEFAULT_QUESTIONS.map((question, index) => (
+                    <Question
+                      key={index}
+                      question={question}
+                      onQuestionClick={handleSubmit}
+                      isDisabled={isPending}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           ) : (
-            <div className="space-y-4 sm:space-y-6">
+            <div>
               {messages.map((message, index) => (
-                <Message key={index} message={message} />
+                <Message
+                  key={index}
+                  message={message}
+                  isLast={index === messages.length - 1}
+                />
               ))}
               <div ref={messagesEndRef} />
             </div>
@@ -144,7 +159,7 @@ export default function Home() {
       </main>
 
       {/* Footer with Chat Input */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-[#1e1e1e]/80 backdrop-blur-sm">
+      <footer className="fixed bottom-0 left-0 right-0 bg-[#1e1e1e]">
         <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
           <ChatInput
             isPending={isPending}
