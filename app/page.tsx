@@ -1,23 +1,20 @@
 "use client";
 
-import { FC, useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
 import { track } from "@vercel/analytics";
 import { MAX_MESSAGES } from "@/constants/chat";
 import { DEFAULT_QUESTIONS } from "@/constants/questions";
 import { Question } from "@/components/Question";
+import { ChatInput } from "./components/ChatInput";
 import { Message, type MessageType } from "@/components/Message";
-import { ChatInput } from "@/components/ChatInput";
-import { RiArrowLeftLine } from "react-icons/ri";
 
-// Types
 interface StreamData {
   type: string;
   content: string;
   threadId?: string;
 }
 
-// Utility functions
 const handleStreamResponse = async (
   reader: ReadableStreamDefaultReader<Uint8Array>,
   setMessages: React.Dispatch<React.SetStateAction<MessageType[]>>
@@ -32,7 +29,7 @@ const handleStreamResponse = async (
 
     buffer += decoder.decode(value, { stream: true });
     const lines = buffer.split("\n");
-    buffer = lines.pop() || ""; // Keep the last incomplete line in the buffer
+    buffer = lines.pop() || "";
 
     for (const line of lines) {
       if (line.startsWith("data: ")) {
@@ -58,11 +55,9 @@ const handleStreamResponse = async (
   }
 };
 
-const Home: FC = () => {
+export default function Home() {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [isPending, setIsPending] = useState(false);
-  const [hasStartedChat, setHasStartedChat] = useState(false);
-
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -72,7 +67,6 @@ const Home: FC = () => {
   const handleSubmit = async (inputText: string) => {
     if (!inputText.trim() || messages.length >= MAX_MESSAGES * 2) return;
 
-    setHasStartedChat(true);
     setIsPending(true);
     track("Text input");
 
@@ -80,7 +74,6 @@ const Home: FC = () => {
     formData.append("input", inputText);
     formData.append("history", JSON.stringify(messages));
 
-    // Add user message and empty assistant message
     setMessages((prev) => [
       ...prev,
       { role: "user", content: inputText },
@@ -105,76 +98,63 @@ const Home: FC = () => {
     }
   };
 
-  const handleInputChange = (inputText: string, shouldSubmit?: boolean) => {
+  const handleInputChange = (value: string, shouldSubmit?: boolean) => {
     if (shouldSubmit) {
-      handleSubmit(inputText);
+      handleSubmit(value);
     }
   };
 
   const handleRefresh = () => {
     setMessages([]);
-    setHasStartedChat(false);
+  };
+
+  const handleNewChat = () => {
+    if (isPending) return;
+    setMessages([]);
+    track("New chat");
   };
 
   return (
-    <div
-      className={`${
-        hasStartedChat ? "h-[calc(100vh-100px)]" : "items-center"
-      } w-full flex justify-center relative`}
-    >
-      {hasStartedChat && (
-        <button
-          onClick={handleRefresh}
-          className={`absolute left-4 top-4 p-2 rounded-full bg-neutral-200 dark:bg-neutral-800 hover:bg-neutral-300/80 dark:hover:bg-neutral-900 text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white transition-all duration-200 hidden md:block z-10 ${
-            isPending ? "opacity-0 pointer-events-none" : ""
-          }`}
-          aria-label="Back to start"
-        >
-          <RiArrowLeftLine className="w-5 h-5" />
-        </button>
-      )}
-      <div className="flex flex-col w-full max-w-4xl">
-        {!hasStartedChat ? (
-          <div className="w-full p-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-              {DEFAULT_QUESTIONS.map((question, index) => (
-                <Question
-                  key={index}
-                  question={question}
-                  onQuestionClick={handleSubmit}
-                  isDisabled={isPending || messages.length >= MAX_MESSAGES * 2}
-                />
-              ))}
+    <div className="min-h-screen flex flex-col bg-[#1e1e1e]">
+      {/* Main Content */}
+      <main className="flex-grow overflow-y-auto pb-24 sm:pb-28">
+        <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-8">
+          {messages.length === 0 ? (
+            <div className="space-y-6 sm:space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                {DEFAULT_QUESTIONS.map((question, index) => (
+                  <Question
+                    key={index}
+                    question={question}
+                    onQuestionClick={handleSubmit}
+                    isDisabled={isPending}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="flex-1 relative overflow-y-auto pt-4 px-4 space-y-4 flex flex-col items-start [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
-            {messages.map((message, index) => (
-              <Message key={index} message={message} />
-            ))}
-            <div ref={messagesEndRef} />
-          </div>
-        )}
-
-        <div
-          className={`${
-            hasStartedChat
-              ? "fixed bottom-1 left-0 right-0 flex justify-center"
-              : ""
-          }`}
-        >
-          <div className="w-full max-w-4xl">
-            <ChatInput
-              isPending={isPending}
-              isRefresh={messages.length >= MAX_MESSAGES * 2}
-              onInputChange={handleInputChange}
-              onRefresh={handleRefresh}
-            />
-          </div>
+          ) : (
+            <div className="space-y-4 sm:space-y-6">
+              {messages.map((message, index) => (
+                <Message key={index} message={message} />
+              ))}
+              <div ref={messagesEndRef} />
+            </div>
+          )}
         </div>
-      </div>
+      </main>
+
+      {/* Footer with Chat Input */}
+      <footer className="fixed bottom-0 left-0 right-0 bg-[#1e1e1e]/80 backdrop-blur-sm">
+        <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
+          <ChatInput
+            isPending={isPending}
+            isRefresh={messages.length >= MAX_MESSAGES * 2}
+            onInputChange={handleInputChange}
+            onRefresh={handleRefresh}
+            onNewChat={handleNewChat}
+          />
+        </div>
+      </footer>
     </div>
   );
-};
-
-export default Home;
+}

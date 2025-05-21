@@ -1,12 +1,13 @@
 import { FC, useRef, useState } from "react";
 import Image from "next/image";
-import { RiLoader3Line, RiArrowRightLine } from "react-icons/ri";
+import { RiArrowRightLine, RiAddLine } from "react-icons/ri";
 
 interface ChatInputProps {
   isPending: boolean;
   isRefresh: boolean;
   onInputChange: (value: string, shouldSubmit?: boolean) => void;
   onRefresh: () => void;
+  onNewChat: () => void;
 }
 
 export const ChatInput: FC<ChatInputProps> = ({
@@ -14,6 +15,7 @@ export const ChatInput: FC<ChatInputProps> = ({
   isRefresh,
   onInputChange,
   onRefresh,
+  onNewChat,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [input, setInput] = useState("");
@@ -25,53 +27,65 @@ export const ChatInput: FC<ChatInputProps> = ({
   };
 
   return (
-    <div className="p-4 bg-white dark:bg-black">
-      <div className="max-w-4xl mx-auto">
-        <form
-          className="rounded-full bg-neutral-200/80 dark:bg-neutral-800/80 flex items-center w-full"
-          onSubmit={handleSubmit}
-        >
-          <div className="flex items-center gap-3 pl-4">
-            <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center">
-              <Image
-                src="/5.jpg"
-                alt="Avatar"
-                width={32}
-                height={32}
-                className="object-cover rounded-full"
-                priority
-              />
-            </div>
+    <div className="relative">
+      <div className="bg-[#2d2d2d] text-[#d4d4d4] placeholder:text-[#6b6b6b] border border-[#3d3d3d] flex flex-col rounded-lg">
+        <div className="flex items-center gap-3 py-3 px-4">
+          <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center bg-[#3d3d3d]">
+            <Image
+              src="/5.jpg"
+              alt="Avatar"
+              width={32}
+              height={32}
+              className="object-cover"
+              priority
+            />
           </div>
-          <input
-            type="text"
-            className="bg-transparent focus:outline-hidden p-4 w-full placeholder:text-neutral-600 dark:placeholder:text-neutral-400"
-            placeholder={
-              isRefresh ? "You've reached the message limit" : "Ask me anything"
-            }
-            value={input}
-            onChange={(e) => {
-              setInput(e.target.value);
-              onInputChange(e.target.value);
-            }}
-            ref={inputRef}
-            disabled={isPending || isRefresh}
-          />
-
-          <button
-            type={isRefresh ? "button" : "submit"}
-            className="p-4 text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white"
-            disabled={isPending}
-            onClick={isRefresh ? onRefresh : undefined}
-            aria-label={isRefresh ? "Refresh chat" : "Submit"}
+          <form
+            className="flex-1 flex items-center gap-2"
+            onSubmit={handleSubmit}
           >
-            {isPending ? (
-              <RiLoader3Line className="animate-spin" size={24} />
-            ) : isRefresh ? null : (
-              <RiArrowRightLine size={24} />
-            )}
-          </button>
-        </form>
+            <input
+              type="text"
+              className="flex-1 bg-transparent focus:outline-none p-2 text-[#d4d4d4] placeholder:text-[#6b6b6b]"
+              placeholder={
+                isRefresh
+                  ? "You've reached the message limit"
+                  : "Ask me anything"
+              }
+              value={input}
+              onChange={(e) => {
+                setInput(e.target.value);
+                onInputChange(e.target.value);
+              }}
+              ref={inputRef}
+              disabled={isPending || isRefresh}
+            />
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                className="w-8 h-8 flex items-center justify-center text-[#d4d4d4] hover:text-white hover:bg-[#3d3d3d] active:scale-95 active:bg-[#4d4d4d] rounded-full border border-[#3d3d3d] transition-all disabled:opacity-50 disabled:hover:bg-transparent disabled:active:scale-100"
+                onClick={onNewChat}
+                disabled={isPending}
+                aria-label="New chat"
+              >
+                <div className="w-8 h-8 flex items-center justify-center">
+                  <RiAddLine className="text-[#d4d4d4]" size={18} />
+                </div>
+              </button>
+              <button
+                type={isRefresh ? "button" : "submit"}
+                className="w-8 h-8 flex items-center justify-center text-[#d4d4d4] hover:text-white hover:bg-[#3d3d3d] active:scale-95 active:bg-[#4d4d4d] rounded-full border border-[#3d3d3d] transition-all disabled:opacity-50 disabled:hover:bg-transparent disabled:active:scale-100"
+                disabled={isPending}
+                onClick={isRefresh ? onRefresh : undefined}
+                aria-label={isRefresh ? "Refresh chat" : "Submit"}
+              >
+                <div className="w-8 h-8 flex items-center justify-center">
+                  {isRefresh ? null : <RiArrowRightLine size={18} />}
+                </div>
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
