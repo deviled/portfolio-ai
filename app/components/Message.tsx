@@ -58,7 +58,7 @@ export const Message: FC<MessageProps> = ({ message, isLast }) => {
         </div>
       ) : (
         <div className="relative w-full">
-          <div className="bg-[#252526] text-[#d4d4d4] rounded-2xl rounded-tl-none border border-[#3d3d3d] px-3 py-2 sm:px-4">
+          <div className="text-[#d4d4d4] px-3 py-2 sm:px-4">
             <div className="prose prose-neutral dark:prose-invert max-w-none prose-li:marker:text-[#d4d4d4] prose-base">
               <Markdown>{message.content}</Markdown>
               {!message.content && (

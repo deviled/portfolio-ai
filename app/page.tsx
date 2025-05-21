@@ -118,7 +118,7 @@ export default function Home() {
     <div className="h-[100dvh] flex flex-col bg-[#1e1e1e] overflow-hidden">
       {/* Main Content */}
       <main className="flex-grow overflow-y-auto [&::-webkit-scrollbar]:hidden">
-        <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-12 sm:pb-24">
+        <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-20 sm:pb-24">
           {messages.length === 0 ? (
             <div className="min-h-[calc(100vh-12rem)] flex items-center justify-center">
               <div className="space-y-6 sm:space-y-8 w-full">
