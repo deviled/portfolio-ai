@@ -30,9 +30,9 @@ export const ChatInput: FC<ChatInputProps> = ({
 
   return (
     <div className="relative">
-      <div className="bg-[#2d2d2d] text-[#d4d4d4] placeholder:text-[#6b6b6b] border border-[#3d3d3d] flex flex-col rounded-lg">
+      <div className="bg-neutral-100 dark:bg-[#2d2d2d] text-neutral-900 dark:text-[#d4d4d4] placeholder:text-neutral-500 dark:placeholder:text-[#6b6b6b] border border-neutral-200 dark:border-[#3d3d3d] flex flex-col rounded-lg">
         <div className="flex items-center gap-3 py-3 px-4">
-          <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center bg-[#3d3d3d]">
+          <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center bg-neutral-200 dark:bg-[#3d3d3d]">
             <Image
               src="/5.jpg"
               alt="Avatar"
@@ -48,7 +48,7 @@ export const ChatInput: FC<ChatInputProps> = ({
           >
             <input
               type="text"
-              className="flex-1 bg-transparent focus:outline-none p-2 text-[#d4d4d4] placeholder:text-[#6b6b6b]"
+              className="flex-1 bg-transparent focus:outline-none p-2 text-neutral-900 dark:text-white placeholder:text-neutral-500 dark:placeholder:text-[#d4d4d4]"
               placeholder={
                 isRefresh
                   ? "You've reached the message limit"
@@ -66,19 +66,22 @@ export const ChatInput: FC<ChatInputProps> = ({
               {showNewChat && (
                 <button
                   type="button"
-                  className="w-8 h-8 flex items-center justify-center text-[#d4d4d4] hover:text-white hover:bg-[#3d3d3d] active:scale-95 active:bg-[#4d4d4d] rounded-full border border-[#3d3d3d] transition-all disabled:opacity-50 disabled:hover:bg-transparent disabled:active:scale-100"
+                  className="w-8 h-8 flex items-center justify-center text-neutral-600 dark:text-[#d4d4d4] hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200 dark:hover:bg-[#3d3d3d] active:scale-95 active:bg-neutral-300 dark:active:bg-[#4d4d4d] rounded-full border border-neutral-400 dark:border-[#3d3d3d] transition-all disabled:opacity-50 disabled:hover:bg-transparent disabled:active:scale-100"
                   onClick={onNewChat}
                   disabled={isPending}
                   aria-label="New chat"
                 >
                   <div className="w-8 h-8 flex items-center justify-center">
-                    <RiAddLine className="text-[#d4d4d4]" size={18} />
+                    <RiAddLine
+                      className="text-neutral-600 dark:text-[#d4d4d4]"
+                      size={18}
+                    />
                   </div>
                 </button>
               )}
               <button
                 type={isRefresh ? "button" : "submit"}
-                className="w-8 h-8 flex items-center justify-center text-[#d4d4d4] hover:text-white hover:bg-[#3d3d3d] active:scale-95 active:bg-[#4d4d4d] rounded-full border border-[#3d3d3d] transition-all disabled:opacity-50 disabled:hover:bg-transparent disabled:active:scale-100"
+                className="w-8 h-8 flex items-center justify-center text-neutral-600 dark:text-[#d4d4d4] hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200 dark:hover:bg-[#3d3d3d] active:scale-95 active:bg-neutral-300 dark:active:bg-[#4d4d4d] rounded-full border border-neutral-400 dark:border-[#3d3d3d] transition-all disabled:opacity-50 disabled:hover:bg-transparent disabled:active:scale-100"
                 disabled={isPending}
                 onClick={isRefresh ? onRefresh : undefined}
                 aria-label={isRefresh ? "Refresh chat" : "Submit"}

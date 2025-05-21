@@ -5,3 +5,5 @@
   --color-neutral-200: #f0f0f0;
   --color-neutral-300: #d1d1d1;
 }
+
+@custom-variant dark (&:where(.dark, .dark *));

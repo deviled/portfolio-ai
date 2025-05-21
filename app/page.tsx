@@ -115,7 +115,7 @@ export default function Home() {
   };
 
   return (
-    <div className="h-[100dvh] flex flex-col bg-[#1e1e1e] overflow-hidden">
+    <div className="h-[100dvh] flex flex-col bg-white dark:bg-[#1e1e1e] overflow-hidden">
       {/* Main Content */}
       <main className="flex-grow overflow-y-auto [&::-webkit-scrollbar]:hidden">
         <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-20 sm:pb-24">
@@ -123,11 +123,11 @@ export default function Home() {
             <div className="min-h-[calc(100vh-12rem)] flex items-center justify-center">
               <div className="space-y-6 sm:space-y-8 w-full">
                 <div className="text-center space-y-3">
-                  <h1 className="text-3xl sm:text-4xl font-bold text-[#d4d4d4]">
+                  <h1 className="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white">
                     Chat with Digital <span className="text-[#FF00FF]">Me</span>
                     .
                   </h1>
-                  <p className="text-[#a0a0a0] text-sm sm:text-lg">
+                  <p className="text-neutral-600 dark:text-[#d4d4d4] text-sm sm:text-lg">
                     Ask me anything about my journey, projects, or tech stack
                   </p>
                 </div>
@@ -159,7 +159,7 @@ export default function Home() {
       </main>
 
       {/* Footer with Chat Input */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-[#1e1e1e]">
+      <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-[#1e1e1e]">
         <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
           <ChatInput
             isPending={isPending}

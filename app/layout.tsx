@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body className="dark:text-white bg-white dark:bg-black min-h-dvh flex flex-col justify-between antialiased">
         {children}
         <Toaster richColors theme="system" />
