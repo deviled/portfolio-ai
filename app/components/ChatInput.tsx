@@ -66,7 +66,7 @@ export const ChatInput: FC<ChatInputProps> = ({
               {showNewChat && (
                 <button
                   type="button"
-                  className="w-8 h-8 flex items-center justify-center text-neutral-600 dark:text-[#d4d4d4] hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200 dark:hover:bg-[#3d3d3d] active:scale-95 active:bg-neutral-300 dark:active:bg-[#4d4d4d] rounded-full border border-neutral-400 dark:border-[#3d3d3d] transition-all disabled:opacity-50 disabled:hover:bg-transparent disabled:active:scale-100"
+                  className="w-8 h-8 flex items-center justify-center text-neutral-600 dark:text-[#d4d4d4] hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200 dark:hover:bg-[#3d3d3d] active:scale-95 active:bg-neutral-300 dark:active:bg-[#4d4d4d] rounded-full border border-neutral-400 dark:border-[#6d6d6d] transition-all disabled:opacity-50 disabled:hover:bg-transparent disabled:active:scale-100"
                   onClick={onNewChat}
                   disabled={isPending}
                   aria-label="New chat"
@@ -81,7 +81,7 @@ export const ChatInput: FC<ChatInputProps> = ({
               )}
               <button
                 type={isRefresh ? "button" : "submit"}
-                className="w-8 h-8 flex items-center justify-center text-neutral-600 dark:text-[#d4d4d4] hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200 dark:hover:bg-[#3d3d3d] active:scale-95 active:bg-neutral-300 dark:active:bg-[#4d4d4d] rounded-full border border-neutral-400 dark:border-[#3d3d3d] transition-all disabled:opacity-50 disabled:hover:bg-transparent disabled:active:scale-100"
+                className="w-8 h-8 flex items-center justify-center text-neutral-600 dark:text-[#d4d4d4] hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200 dark:hover:bg-[#3d3d3d] active:scale-95 active:bg-neutral-300 dark:active:bg-[#4d4d4d] rounded-full border border-neutral-400 dark:border-[#6d6d6d] transition-all disabled:opacity-50 disabled:hover:bg-transparent disabled:active:scale-100"
                 disabled={isPending}
                 onClick={isRefresh ? onRefresh : undefined}
                 aria-label={isRefresh ? "Refresh chat" : "Submit"}
