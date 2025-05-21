@@ -115,19 +115,19 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#1e1e1e]">
+    <div className="h-[100dvh] flex flex-col bg-[#1e1e1e] overflow-hidden">
       {/* Main Content */}
-      <main className="flex-grow overflow-y-auto pb-24 sm:pb-28">
-        <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-8 h-full">
+      <main className="flex-grow overflow-y-auto [&::-webkit-scrollbar]:hidden">
+        <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-12 sm:pb-24">
           {messages.length === 0 ? (
             <div className="min-h-[calc(100vh-12rem)] flex items-center justify-center">
               <div className="space-y-6 sm:space-y-8 w-full">
                 <div className="text-center space-y-3">
-                  <h1 className="text-2xl sm:text-3xl font-bold text-[#d4d4d4]">
+                  <h1 className="text-3xl sm:text-4xl font-bold text-[#d4d4d4]">
                     Chat with Digital <span className="text-[#FF00FF]">Me</span>
                     .
                   </h1>
-                  <p className="text-[#a0a0a0] text-sm sm:text-base">
+                  <p className="text-[#a0a0a0] text-sm sm:text-lg">
                     Ask me anything about my journey, projects, or tech stack
                   </p>
                 </div>
@@ -144,7 +144,7 @@ export default function Home() {
               </div>
             </div>
           ) : (
-            <div>
+            <div className="w-full">
               {messages.map((message, index) => (
                 <Message
                   key={index}
@@ -152,7 +152,7 @@ export default function Home() {
                   isLast={index === messages.length - 1}
                 />
               ))}
-              <div ref={messagesEndRef} />
+              <div ref={messagesEndRef} className="h-4" />
             </div>
           )}
         </div>
@@ -167,6 +167,7 @@ export default function Home() {
             onInputChange={handleInputChange}
             onRefresh={handleRefresh}
             onNewChat={handleNewChat}
+            showNewChat={messages.length > 0}
           />
         </div>
       </footer>

@@ -8,6 +8,7 @@ interface ChatInputProps {
   onInputChange: (value: string, shouldSubmit?: boolean) => void;
   onRefresh: () => void;
   onNewChat: () => void;
+  showNewChat?: boolean;
 }
 
 export const ChatInput: FC<ChatInputProps> = ({
@@ -16,6 +17,7 @@ export const ChatInput: FC<ChatInputProps> = ({
   onInputChange,
   onRefresh,
   onNewChat,
+  showNewChat = false,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [input, setInput] = useState("");
@@ -61,17 +63,19 @@ export const ChatInput: FC<ChatInputProps> = ({
               disabled={isPending || isRefresh}
             />
             <div className="flex items-center gap-2">
-              <button
-                type="button"
-                className="w-8 h-8 flex items-center justify-center text-[#d4d4d4] hover:text-white hover:bg-[#3d3d3d] active:scale-95 active:bg-[#4d4d4d] rounded-full border border-[#3d3d3d] transition-all disabled:opacity-50 disabled:hover:bg-transparent disabled:active:scale-100"
-                onClick={onNewChat}
-                disabled={isPending}
-                aria-label="New chat"
-              >
-                <div className="w-8 h-8 flex items-center justify-center">
-                  <RiAddLine className="text-[#d4d4d4]" size={18} />
-                </div>
-              </button>
+              {showNewChat && (
+                <button
+                  type="button"
+                  className="w-8 h-8 flex items-center justify-center text-[#d4d4d4] hover:text-white hover:bg-[#3d3d3d] active:scale-95 active:bg-[#4d4d4d] rounded-full border border-[#3d3d3d] transition-all disabled:opacity-50 disabled:hover:bg-transparent disabled:active:scale-100"
+                  onClick={onNewChat}
+                  disabled={isPending}
+                  aria-label="New chat"
+                >
+                  <div className="w-8 h-8 flex items-center justify-center">
+                    <RiAddLine className="text-[#d4d4d4]" size={18} />
+                  </div>
+                </button>
+              )}
               <button
                 type={isRefresh ? "button" : "submit"}
                 className="w-8 h-8 flex items-center justify-center text-[#d4d4d4] hover:text-white hover:bg-[#3d3d3d] active:scale-95 active:bg-[#4d4d4d] rounded-full border border-[#3d3d3d] transition-all disabled:opacity-50 disabled:hover:bg-transparent disabled:active:scale-100"
